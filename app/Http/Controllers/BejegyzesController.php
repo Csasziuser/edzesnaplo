@@ -10,7 +10,8 @@ use Log;
 class BejegyzesController extends Controller
 {
     function index() {
-
+        $edzesek = bejegyzes::all();
+        return response()->json($edzesek,200,['Access-Control-Allow-Origin'=>'*'],JSON_UNESCAPED_UNICODE);
     }
 
     function store(Request $request) {
