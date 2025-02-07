@@ -34,4 +34,9 @@ class BejegyzesController extends Controller
         return response()->json(['success'=>true,'message'=>'Rekord sikeresen hozzáadva!'],201,['Access-Control-Allow-Origin'=>'*'],JSON_UNESCAPED_UNICODE);
     
     }
+    function destroy(Request $request) {
+        $b = bejegyzes::findOrFail($request->id);
+        $b->delete();
+        return response()->json(["success" => true, "message" => "Sikeres törlés!"], 204,['Access-Control-Allow-Origin'=>'*'],JSON_UNESCAPED_UNICODE);
+    }
 }

@@ -10,6 +10,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/edzesnaplo', [BejegyzesController::class, 'index'])->name('bejegyzes.index');
 Route::post('/edzesnaplo', [BejegyzesController::class, 'store'])->name('bejegyzes.store');
+Route::delete('/edzesnaplo', [BejegyzesController::class, 'destroy'])->name('bejegyzes.destroy');
 
 
 
