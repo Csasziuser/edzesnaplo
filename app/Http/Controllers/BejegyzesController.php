@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\bejegyzes;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+
 use Log;
 
 class BejegyzesController extends Controller
@@ -20,7 +22,9 @@ class BejegyzesController extends Controller
                 'gyakorlat'=>'required|string',
                 'ismetlesszam'=>'required|min:1|max:8|integer'
             ],[
-                'min'=>'Érvénytelen ismétlésszám!'
+                'min'=>'Érvénytelen ismétlésszám!',
+                'integer'=>'Az ismétlésszám szám értéket kell tartalmazzon!',
+                'string'=>'A(z) :attribute mező szöveges értéket kell, hogy tartalmazzon! 😶',
             ]);
 
         } catch (ValidationException $th) {
@@ -35,8 +39,20 @@ class BejegyzesController extends Controller
     
     }
     function destroy(Request $request) {
-        $b = bejegyzes::findOrFail($request->id);
+        try
+        {
+            $b = bejegyzes::findOrFail($request->id);
+
+            
+        }
+        // catch(Exception $e) catch any exception
+        catch(ModelNotFoundException $e)
+        {
+            return response()->json(["success" => false, "message" => "Sikertelen törlés!"], 404);
+        }
         $b->delete();
-        return response()->json(["success" => true, "message" => "Sikeres törlés!"], 204,['Access-Control-Allow-Origin'=>'*'],JSON_UNESCAPED_UNICODE);
+        return response()->json(["success" => true, "message" => "Sikeres törlés!"], 200,['Access-Control-Allow-Origin'=>'*'],JSON_UNESCAPED_UNICODE);
+
+        
     }
 }
